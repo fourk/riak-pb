@@ -86,6 +86,11 @@ function Pool(options) {
 
   p.disconnect =
   function disconnect() {
+    if (! pool.length) {
+      process.nextTick(function() { p.emit('end'); });
+      return;
+    }
+
     pool.forEach(function(client) {
       client.disconnect();
     });
