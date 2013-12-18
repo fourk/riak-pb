@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "protobuf.js": ">=0.0.17",
-    "butils": "*"
+    "butils": "*",
+    "readable-stream": "1.1.9"
   },
   "devDependencies": {
     "tap": "*",

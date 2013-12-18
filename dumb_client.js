@@ -1,6 +1,5 @@
 var assert = require('assert');
-var Domain = require('domain');
-var Duplex = require('stream').Duplex;
+var Duplex = require('readable-stream').Duplex;
 var Connections = require('./connections');
 var _Protocol = require('./protocol');
 var log = require('./log')('dumb-client');
@@ -56,13 +55,8 @@ function Client(options) {
 
       /// All this following code just to
       /// detect unsuccessful connection
-      var domain = Domain.create();
-      domain.on('error', onDomainError);
-      domain.add(connection);
       connection.once('connect', function() {
         log('connected');
-        domain.remove(connection);
-        domain.dispose();
       });
     }
     parser.expectMultiple(expectMultiple);
