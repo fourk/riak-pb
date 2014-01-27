@@ -11,7 +11,7 @@
     "url": "git://github.com/CrowdProcess/riak-pb.git"
   },
   "dependencies": {
-    "protobuf.js": ">=0.0.17",
+    "protobuf.js": "<1.0.0",
     "butils": "*"
   },
   "devDependencies": {
