@@ -28,7 +28,16 @@ function Pool(options) {
     var client;
     for (var i = 0; i < pool.length; i ++) {
       client = pool[i];
-      if (! client.busy && client.queue.length == 0) return client;
+      if (! client.busy && client.queue.length == 0) {
+
+        if (!client.stillAlive()) {
+          remove(client);
+          client.disconnect();
+        } else {
+
+          return client;
+        }
+      }
     }
   }
 

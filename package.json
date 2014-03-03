@@ -27,6 +27,10 @@
     "client"
   ],
   "author": "CrowdProcess",
+  "contributors": [
+    "Alain Rodriguez <eagle5command@gmail.com>",
+    "Rob Punkunus <bigpunk@uber.com>"
+  ],
   "license": "MIT",
   "readmeFilename": "README.md",
   "gitHead": "021247b24fdf0982ff4bb6c08c44a959585427e6"
