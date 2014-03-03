@@ -1,4 +1,4 @@
-var Duplex = require('stream').Duplex;
+var Duplex = require('readable-stream').Duplex;
 var butils = require('butils');
 var messageCodes = require('./message_codes');
 var log = require('../log')('parser');
