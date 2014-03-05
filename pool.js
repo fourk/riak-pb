@@ -28,7 +28,20 @@ function Pool(options) {
     var client;
     for (var i = 0; i < pool.length; i ++) {
       client = pool[i];
-      if (! client.busy && client.queue.length == 0) return client;
+      if (! client.busy && client.queue.length == 0) {
+
+        if (!client.stillAlive()) {
+          remove(client);
+          // since remove takes the client off the array that
+          // is being iterated over decrement i to make sure it
+          // hits the next element.
+          i--;
+          client.disconnect();
+        } else {
+
+          return client;
+        }
+      }
     }
   }
 
