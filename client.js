@@ -5,6 +5,8 @@ var Options = require('./options');
 var DumbClient = require('./dumb_client');
 var log = require('./log')('client');
 
+var TIME_TO_LIVE = 10 * 1000; // connections stay around for 10 seconds.
+
 exports =
 module.exports =
 function RiakClient(options) {
@@ -17,6 +19,8 @@ function RiakClient(options) {
   var callback;
   var stream;
   var isDone = false;
+
+  var startTime = Date.now();
 
   c.busy = false;
   c.queue = [];
@@ -174,6 +178,12 @@ function RiakClient(options) {
   function disconnect() {
     ending = true;
     flush();
+  };
+
+  c.stillAlive = function() {
+    var diff = Date.now() - startTime;
+
+    return diff < TIME_TO_LIVE;
   };
 
   return c;
