@@ -3,14 +3,14 @@ var net = require('net');
 var extend = require('util')._extend;
 
 var defaultOptions = {
-  innactivityTimeout: 3000
+  innactivityTimeout: 1000
 };
 
 module.exports =
 function Pool(options) {
   if (! options) options = {};
 
-  options = extend({}, options);
+  options = extend(defaultOptions, options);
 
   if (options.nodes && ! Array.isArray(options.nodes))
     options.nodes = [options.nodes];
