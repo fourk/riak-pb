@@ -77,6 +77,7 @@ function Client(options) {
     connection = connections.connect();
     connection.on('error', onConnectionError);
     connection.on('end', onConnectionEnd);
+    connection.on('error', function() {});
     parser = Protocol.parse();
     connection.pipe(parser);
     parser.on('readable', onParserReadable);
