@@ -3,7 +3,7 @@ var net = require('net');
 var extend = require('util')._extend;
 
 var defaultOptions = {
-  innactivityTimeout: 3000
+  innactivityTimeout: 10000
 };
 
 module.exports =
