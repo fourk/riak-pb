@@ -110,7 +110,9 @@ function RiakClient(options) {
       function cleanup() {
         if (! cleanedup) {
           cleanedup = true;
-          client.unpipe(stream);
+          if (typeof client.unpipe === 'function') {
+              client.unpipe(stream);
+          }
           client.removeListener('interrupted', clientInterrupted);
           client.addListener('readable', clientOnReadable);
         }

@@ -27,6 +27,9 @@ function Client(options) {
   var maxRetries = options.maxRetries || 10;
   var maxDelay = options.maxDelay || 2000;
 
+  connections.on('error', function(err) {
+      log('Error on the connections object', err.stack || err);
+  });
   /// Command
 
   var oldWrite = s.write;
@@ -73,6 +76,7 @@ function Client(options) {
     if (destroyed) throw new Error('Destroyed');
     connection = connections.connect();
     connection.on('error', onConnectionError);
+    connection.on('end', onConnectionEnd);
     parser = Protocol.parse();
     connection.pipe(parser);
     parser.on('readable', onParserReadable);
@@ -105,7 +109,10 @@ function Client(options) {
 
     if (connection) {
       connection.removeListener('error', onConnectionError);
-      connection.unpipe(parser);
+      connection.removeListener('end', onConnectionEnd);
+      if (typeof connection.unpipe === 'function') {
+          connection.unpipe(parser);
+      }
       connection.destroy();
       connection = undefined;
       parser.destroy();
@@ -116,6 +123,23 @@ function Client(options) {
     retry();
   }
 
+  function onConnectionEnd() {
+      s.emit('interrupted', new Error('Connection Ended'));
+
+      if (connection) {
+          connection.removeListener('error', onConnectionError);
+          connection.removeListener('end', onConnectionEnd);
+          if (typeof connection.unpipe === 'function') {
+              connection.unpipe(parser);
+          }
+          connection.destroy();
+          connection = undefined;
+          parser.destroy();
+          parser.removeListener('readable', onParserReadable);
+          parser = undefined;
+      }
+      retry();
+  }
 
   /// Read from parser
 

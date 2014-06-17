@@ -42,7 +42,7 @@ function Pool(options) {
 
   function onError(err) {
     e.emit('error', err);
-    connection.end();
+    this.end();
   }
 
   function onEnd() {
@@ -50,7 +50,7 @@ function Pool(options) {
   }
 
   function onTimeout() {
-    connection.end();
+    this.end();
   }
 
   /// Random node
