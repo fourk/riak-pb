@@ -169,6 +169,8 @@ function Client(options) {
         error.code = 'ECONNREFUSED'; // more HACK
         onConnectionError(new Error(reply.errmsg));
 
+      } else if (reply.errmsg === 'timeout') {
+        retry();
       }
       else respondError(new Error(reply.errmsg));
     } else {
